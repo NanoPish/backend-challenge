@@ -101,7 +101,7 @@ mutation incr {
   }
 }
 
-mutation incr {
+mutation incr2 {
   incrementCounter(input: {key: "b", value: 1}) {
     counter {
       key
@@ -110,7 +110,7 @@ mutation incr {
   }
 }
 
-mutation incr {
+mutation incr3 {
   incrementCounter(input: {key: "b", value: 2}) {
     counter {
       key
@@ -119,7 +119,7 @@ mutation incr {
   }
 }
 
-mutation incr {
+mutation incr4 {
   incrementCounter(input: {key: "b", value: 3}) {
     counter {
       key
@@ -168,7 +168,7 @@ query getCounter {
 #   }
 # }
 
-query getCounter {
+query getCounter2 {
   counter(key: "b") {
     key
     value
@@ -184,7 +184,7 @@ query getCounter {
 #   }
 # }
 
-query getCounter {
+query getCounter3 {
   counter {
     key
     value
@@ -219,7 +219,7 @@ mutation record {
 }
 
 # 30 minutes ago
-mutation record {
+mutation record2 {
   recordMetric(input: {key: "a", value: 3}) {
     metric {
       key
@@ -230,7 +230,7 @@ mutation record {
 }
 
 # 40 seconds ago
-mutation record {
+mutation record3 {
   recordMetric(input: {key: "a", value: 7}) {
     metric {
       key
@@ -241,7 +241,7 @@ mutation record {
 }
 
 # 5 seconds ago
-mutation record {
+mutation record4 {
   recordMetric(input: {key: "a", value: 2}) {
     metric {
       key
@@ -256,7 +256,7 @@ mutation record {
 query allMetrics {
   metrics {
     key
-    value
+    values
     sum
   }
 }
