@@ -1,8 +1,8 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { AppResolver } from './app.resolvers';
-import { AppService } from './app.service';
+import { CountersResolver } from './counters/counters.resolver';
+import { CountersService } from './counters/counters.service';
 
 @Module({
   imports: [
@@ -14,6 +14,6 @@ import { AppService } from './app.service';
       sortSchema: true,
     }),
   ],
-  providers: [AppService, AppResolver],
+  providers: [CountersService, CountersResolver],
 })
 export class AppModule {}

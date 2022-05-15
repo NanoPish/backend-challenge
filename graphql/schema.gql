@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""counter """
+type Counter {
+  key: String!
+  value: Int!
+}
+
+input IncrementCounterInput {
+  key: String!
+  value: Float!
+}
+
+type IncrementCounterPayload {
+  counter: Counter!
+}
+
+type Mutation {
+  incrementCounter(input: IncrementCounterInput!): IncrementCounterPayload
+}
+
 type Query {
-  hello: String!
+  counter(key: String): Counter
+  counters: [Counter!]!
 }
