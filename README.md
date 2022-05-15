@@ -1,3 +1,9 @@
+# Tester mon programme :
+
+* npm install && npm run start:dev
+* lancer mon serveur sur localhost:3000 et exécuter les requêtes de l'énoncé
+* lancer les tests automatisés avec npm run test:e2e
+
 <p align="center">
   <img alt="Riot logo" src="https://tryriot.com/wp-content/themes/riot-2020-production/images/logo-purple.svg" />
   <br>
