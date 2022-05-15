@@ -10,7 +10,7 @@ export class MetricsResolver {
   constructor(private readonly metricsService: MetricsService) {}
 
   @Query(returns => Metric, {nullable: true})
-  async metric(@Args('key', { nullable: true }) key?: string): Promise<Metric | null> {
+  async metric(@Args('key') key: string): Promise<Metric | null> {
     const metric = await this.metricsService.findOneByKey(key);
 
     return metric;
@@ -22,10 +22,10 @@ export class MetricsResolver {
   }
 
   @Mutation(returns => RecordMetricPayload, {nullable: true})
-  async incrementMetric(
-    @Args('input') IncrementMetricInput: RecordMetricInput,
+  async recordMetric(
+    @Args('input') RecordMetricInput: RecordMetricInput,
   ): Promise<RecordMetricPayload | null> {
-    const metric: Metric = await this.metricsService.increment(IncrementMetricInput);
+    const metric: Metric = await this.metricsService.record(RecordMetricInput);
 
     return new RecordMetricPayload(metric);
   }

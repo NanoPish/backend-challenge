@@ -8,8 +8,8 @@ export class Counter {
   }
 
   @Field()
-  key: string;
+  key: string = undefined;
 
   @Field(type => Int)
-  value: number;
+  value: number = undefined;
 }

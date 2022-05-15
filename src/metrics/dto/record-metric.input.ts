@@ -1,4 +1,4 @@
-import { Field, InputType} from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { MaxLength } from 'class-validator';
 
 @InputType()
@@ -7,6 +7,6 @@ export class RecordMetricInput {
   @MaxLength(30)
   key: string;
 
-  @Field()
+  @Field(type => Int)
   value: number;
 }

@@ -10,18 +10,37 @@ type Counter {
 
 input IncrementCounterInput {
   key: String!
-  value: Float!
+  value: Int!
 }
 
 type IncrementCounterPayload {
   counter: Counter!
 }
 
+"""metric"""
+type Metric {
+  key: String!
+  sum: Int!
+  values: [Int!]!
+}
+
 type Mutation {
   incrementCounter(input: IncrementCounterInput!): IncrementCounterPayload
+  recordMetric(input: RecordMetricInput!): RecordMetricPayload
 }
 
 type Query {
   counter(key: String): Counter
   counters: [Counter!]!
+  metric(key: String!): Metric
+  metrics: [Metric!]!
+}
+
+input RecordMetricInput {
+  key: String!
+  value: Int!
+}
+
+type RecordMetricPayload {
+  metric: Metric!
 }

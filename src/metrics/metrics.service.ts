@@ -4,59 +4,41 @@ import { Metric } from './models/metric.model';
 
 @Injectable()
 export class MetricsService {
-    private static metrics: Map<string, number> = new Map();
-    private static highestMetric: Metric = undefined;
-    private static isSorted: boolean = false;
+    // use a dictionnary for O(1) read/write
+    // use Map instead of Object for performance
+    private static metrics: Map<string, Metric> = new Map();
+    private static isSorted: boolean;
 
-    private async sortMetrics() {
-        if (!MetricsService.isSorted) {
-            MetricsService.metrics =
-            new Map([...MetricsService.metrics.entries()].sort((a, b) => b[1] - a[1]));
-            MetricsService.isSorted = true;
+    async record(data: RecordMetricInput): Promise<Metric> {
+        let selectedMetric: Metric = MetricsService.metrics.get(data.key);
+        if (selectedMetric === undefined) {
+            selectedMetric = new Metric(data.key);
         }
-    }
+        selectedMetric.addValue(data.value);
 
-    async increment(data: RecordMetricInput): Promise<Metric> {
-        const oldMetricValue = MetricsService.metrics.get(data.key);
-        const incrementCount = Math.round(data.value);
-        const newMetricValue = oldMetricValue !== undefined ? oldMetricValue + incrementCount : incrementCount;
-    
-        MetricsService.isSorted = false;
-        MetricsService.metrics.set(data.key, newMetricValue);
+        MetricsService.metrics.set(data.key, selectedMetric);
         
-        const resultingMetric = new Metric(data.key, newMetricValue);
-
-        // keep track of the highest metric to reduce sorting needs
-        if (MetricsService.highestMetric === undefined ||
-            MetricsService.highestMetric.value < newMetricValue) {
-            MetricsService.highestMetric = resultingMetric;
-        }
-    
-        return resultingMetric;
+        return selectedMetric;
     }
 
-    async findOneByKey(key?: string): Promise<Metric> {
-        // if there is no key specified, return the higest value metric
-        if (key === undefined) {
-            return MetricsService.highestMetric;
-        }
+    async findOneByKey(key: string): Promise<Metric | null> {
+        const selectedMetric: Metric = MetricsService.metrics.get(key);
 
-        // else, return the specified metric
-        const resultValue = MetricsService.metrics.get(key);
+        if (selectedMetric === undefined)
+            return null;
 
-        if (resultValue === undefined) {
-            return undefined;
-        } else {
-            return new Metric(key, resultValue);
-        }
+        return selectedMetric;
     }
 
     async findAll(): Promise<Metric[]> {
-        await this.sortMetrics();
+        // don't sort if it's already sorted (race condition possible as not atomic)
+        if (!MetricsService.isSorted) {
+            MetricsService.metrics =
+            new Map([...MetricsService.metrics.entries()].sort((a, b) => b[1].sum - a[1].sum));
+            MetricsService.isSorted = true;
+        }
 
-        const resultingMetrics: Metric[] = Array.from(MetricsService.metrics, ([key, value]) => {
-            return new Metric(key, value);
-          });
+        const resultingMetrics: Metric[] = Array.from(MetricsService.metrics.values());
 
         return resultingMetrics;
     }
