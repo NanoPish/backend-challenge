@@ -1,15 +1,19 @@
 import { Field, ObjectType, Int } from '@nestjs/graphql';
 
-@ObjectType({ description: 'metric ' })
+@ObjectType({ description: 'metric' })
 export class Metric {
-  constructor(key: string, value: number) {
+  constructor(key: string, values: number[], sum: number) {
     this.key = key;
-    this.value = value;
+    this.values = values;
+    this.sum = sum;
   }
 
   @Field()
   key: string;
 
+  @Field(type => [Int])
+  values: number[];
+
   @Field(type => Int)
-  value: number;
+  sum: number;
 }

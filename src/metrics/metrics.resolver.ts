@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { IncrementMetricInput } from './dto/increment-metric.input';
-import { IncrementMetricPayload } from './dto/increment-metric.payload';
+import { RecordMetricInput } from './dto/record-metric.input';
+import { RecordMetricPayload } from './dto/record-metric.payload';
 import { Metric } from './models/metric.model';
 import { MetricsService } from './metrics.service';
 
@@ -21,12 +21,12 @@ export class MetricsResolver {
     return this.metricsService.findAll();
   }
 
-  @Mutation(returns => IncrementMetricPayload, {nullable: true})
+  @Mutation(returns => RecordMetricPayload, {nullable: true})
   async incrementMetric(
-    @Args('input') IncrementMetricInput: IncrementMetricInput,
-  ): Promise<IncrementMetricPayload | null> {
+    @Args('input') IncrementMetricInput: RecordMetricInput,
+  ): Promise<RecordMetricPayload | null> {
     const metric: Metric = await this.metricsService.increment(IncrementMetricInput);
 
-    return new IncrementMetricPayload(metric);
+    return new RecordMetricPayload(metric);
   }
 }

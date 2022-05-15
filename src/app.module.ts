@@ -3,6 +3,8 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CountersResolver } from './counters/counters.resolver';
 import { CountersService } from './counters/counters.service';
+import { MetricsResolver } from './metrics/metrics.resolver';
+import { MetricsService } from './metrics/metrics.service';
 
 @Module({
   imports: [
@@ -14,6 +16,6 @@ import { CountersService } from './counters/counters.service';
       sortSchema: true,
     }),
   ],
-  providers: [CountersService, CountersResolver],
+  providers: [CountersService, CountersResolver, MetricsService, MetricsResolver],
 })
 export class AppModule {}
