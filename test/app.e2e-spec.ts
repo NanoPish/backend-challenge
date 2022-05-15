@@ -15,10 +15,65 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
+  it('records a new counter', async () => {
+    const mutation = () => `
+        mutation incr {
+          incrementCounter(input: {key: "a", value: 1}) {
+            counter {
+              key
+              value
+            }
+          }
+        }
+      `
+
+    const { body } = await request(app.getHttpServer())
+      .post('/graphql')
+      .send({
+        query: mutation(),
+      });
+
+    expect(body).toEqual({
+      data: {
+        incrementCounter: {
+          counter: {
+            "key": "a",
+            "value": 1
+          }
+        }
+      },
+    });
+    
+  })
+
+  it('records an existing counter', async () => {
+    const mutation = () => `
+        mutation incr {
+          incrementCounter(input: {key: "a", value: 1}) {
+            counter {
+              key
+              value
+            }
+          }
+        }
+      `
+
+    const { body } = await request(app.getHttpServer())
+      .post('/graphql')
+      .send({
+        query: mutation(),
+      });
+
+    expect(body).toEqual({
+      data: {
+        incrementCounter: {
+          counter: {
+            "key": "a",
+            "value": 2
+          }
+        }
+      },
+    });
+    
+  })
 });
